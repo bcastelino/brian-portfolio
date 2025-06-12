@@ -44,12 +44,35 @@ npm run dev
 
 ## ✨ Features
 
-* Responsive personal portfolio
-* Contact form with email delivery
-* Fully deployable on Render (free)
-* Deno-based Supabase Edge Function integration
-* Sharp-enabled image optimization for production
-* UptimeRobot to keep site live 24/7
+### ✅ 1. Responsive Portfolio UI
+* Clean, mobile-friendly layout using `Tailwind CSS`
+* Animated sections built with `Framer Motion`
+* `Light` and `dark` mode support
+
+### 📁 2. Project & Resume Showcase
+* Dedicated sections for highlighting projects
+* Downloadable PDF `resume` with external link support
+
+### 📬 3. Fully Functional Contact Form
+* Accepts name, email, and message from users
+* Uses `Supabase Edge Functions` to securely send messages
+* Sends emails via `Mailgun` directly to your inbox
+
+### ☁️ 4. Free & Scalable Hosting
+* Hosted on `Render` using the free tier
+* Auto-deploys on every `GitHub commit`
+
+### 🔌 5. Uptime Monitoring & Wake Prevention
+* Integrated with `UptimeRobot`
+* Keeps the Render app “awake” 24/7 by preventing spin-down
+
+### 📦 6. Optimized Production Builds
+* `sharp` installed for image optimization in production
+* `ESLint` and `Prettier` included for clean, maintainable code
+
+### 🔐 7. Environment Secrets & Secure API Handling
+* `.env` used for secure Mailgun API keys
+* Supabase secrets managed via Edge Function environment settings
 
 ---
 
@@ -98,7 +121,7 @@ graph LR
 * **Render** (free for 1 app, 750 hrs/month)
 * **Supabase** (free for Edge Functions and Postgres usage)
 * **Mailgun** (free up to 100 emails/day)
-* **UptimeRobot** (free for 10-min checks)
+* **UptimeRobot** (free for 10-minute checks)
 
 All services used are either open source or free-tier compatible.
 
