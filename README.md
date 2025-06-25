@@ -98,20 +98,89 @@ npm run dev
 
 ---
 
-## 🔄 Contact Form Flow
+## 🔄 Portfolio WorkFlow
 
 ```mermaid
----
-config:
-  layout: dagre
-  theme: neo-dark
-  look: neo
----
-graph LR
-    A[User Submits Contact Form] --> B[Frontend calls Supabase Edge Function]
-    B --> C[Supabase Function sends email using Mailgun]
-    C --> D[Email delivered to Brian's inbox]
-    D --> E[Frontend confirms submission to user]
+flowchart TD
+    %% Frontend Layer
+    subgraph "Frontend Layer"
+        direction LR
+        Browser["User's Browser"]:::infra
+        NextApp["Next.js App"]:::frontend
+        Page["page.tsx"]:::frontend
+        About["about/page.tsx"]:::frontend
+        Projects["projects/page.tsx"]:::frontend
+        ResumePage["resume/page.tsx"]:::frontend
+        ContactPage["contact/page.tsx"]:::frontend
+        Browser -->|"HTTP GET pages/assets"| NextApp
+        %%NextApp -->|"renders pages"| Browser
+        NextApp -->|"serves assets"| Page
+        Page -->|"navigates to"| About
+        Page -->|"navigates to"| Projects
+        Page -->|"navigates to"| ResumePage
+        Page -->|"navigates to"| ContactPage
+    end
+
+    %% Backend Layer
+    subgraph "Backend Layer"
+        direction LR
+        EdgeFunc["Supabase Edge Function"]:::backend
+        RouteFile["route.ts"]:::backend
+        EdgeFunc --> RouteFile
+    end
+
+    %% External Services
+    subgraph "External Services"
+        direction TB
+        Mailgun["Mailgun API"]:::external
+        Inbox["Brian's Inbox"]:::external
+        UptimeRobot["UptimeRobot"]:::infra
+        ContactPage -->|"POST /api/contact<br>(via Browser)"| EdgeFunc
+        EdgeFunc -->|"Mailgun API call"| Mailgun
+        Mailgun -->|"delivers email"| Inbox
+        EdgeFunc -->|"response success<br>(via Browser)"| ContactPage
+        UptimeRobot -->|"ping every 10min"| NextApp
+    end
+
+    %% CI/CD Infrastructure
+    subgraph "Infrastructure"
+        direction TB
+        GitHub["GitHub"]:::infra
+        Render["Render (Hosting)"]:::infra
+        GitHub -->|"push triggers CI/CD"| Render
+        Render -->|"hosts Next.js App"| NextApp
+        Render -->|"deploys Edge Function"| EdgeFunc
+    end
+
+    %% Click Events
+    click Page "https://github.com/bcastelino/brian-portfolio/blob/main/app/page.tsx"
+    click Layout "https://github.com/bcastelino/brian-portfolio/blob/main/app/layout.tsx"
+    click About "https://github.com/bcastelino/brian-portfolio/blob/main/app/about/page.tsx"
+    click ContactPage "https://github.com/bcastelino/brian-portfolio/blob/main/app/contact/page.tsx"
+    click Projects "https://github.com/bcastelino/brian-portfolio/blob/main/app/projects/page.tsx"
+    click ResumePage "https://github.com/bcastelino/brian-portfolio/blob/main/app/resume/page.tsx"
+    click ThemeProvider "https://github.com/bcastelino/brian-portfolio/blob/main/app/ThemeProvider.tsx"
+    click ThemeToggle "https://github.com/bcastelino/brian-portfolio/blob/main/app/ThemeToggle.tsx"
+    click Globals "https://github.com/bcastelino/brian-portfolio/blob/main/app/globals.css"
+    click RouteFile "https://github.com/bcastelino/brian-portfolio/blob/main/app/api/contact/route.ts"
+    click StaticAssets "https://github.com/bcastelino/brian-portfolio/tree/main/public/"
+    click NextConfig "https://github.com/bcastelino/brian-portfolio/blob/main/next.config.js"
+    click TailwindConfig "https://github.com/bcastelino/brian-portfolio/blob/main/tailwind.config.js"
+    click PostcssConfig "https://github.com/bcastelino/brian-portfolio/blob/main/postcss.config.js"
+    click TsConfig "https://github.com/bcastelino/brian-portfolio/blob/main/tsconfig.json"
+    click PackageJSON "https://github.com/bcastelino/brian-portfolio/blob/main/package.json"
+    click PackageLock "https://github.com/bcastelino/brian-portfolio/blob/main/package-lock.json"
+    click Readme "https://github.com/bcastelino/brian-portfolio/blob/main/README.md"
+    click EnvExample "https://github.com/bcastelino/brian-portfolio/blob/main/.env.example"
+    click Gitignore "https://github.com/bcastelino/brian-portfolio/blob/main/.gitignore"
+
+    %% Styles
+    classDef frontend fill:#cce5ff,stroke:#0366d6,stroke-width:1px;
+    classDef backend fill:#d4edda,stroke:#28a745,stroke-width:1px;
+    classDef external fill:#fff3cd,stroke:#d39e00,stroke-width:1px;
+    classDef infra fill:#e2e3e5,stroke:#6c757d,stroke-width:1px;
+
+
 ```
 
 ---
